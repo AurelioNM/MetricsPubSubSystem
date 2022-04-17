@@ -1,24 +1,28 @@
 package service
 
 import com.rabbitmq.client.ConnectionFactory
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import metric.IMetric
+import metric.Metric
 import java.nio.charset.StandardCharsets
 
 class MetricService {
 
     private val factory = ConnectionFactory()
+    private val queueName = "metric_queue"
 
-    fun postMetric(metric: IMetric) {
+    fun postMetric(metric: Metric) {
 
         factory.newConnection("amqp://guest:guest@localhost:5672/").use { connection ->
             connection.createChannel().use { channel ->
-                channel.queueDeclare("metric_queue", false, false, false, null)
+                channel.queueDeclare(queueName, true, false, false, null)
 
                 channel.basicPublish(
                     "",
-                    "metric_queue",
+                    queueName,
                     null,
-                    metric.toString().toByteArray(StandardCharsets.UTF_8)
+                    Json.encodeToString(metric).toByteArray(StandardCharsets.UTF_8)
                 )
             }
         }

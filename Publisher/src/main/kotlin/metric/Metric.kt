@@ -1,18 +1,16 @@
 package metric
 
-import java.math.BigDecimal
-import java.time.LocalDateTime
+import kotlinx.datetime.Instant
+import kotlinx.serialization.*
 
+@Serializable
 class Metric(
     override val nameSpace: String,
-    override val time: LocalDateTime,
-    override val value: BigDecimal,
+    override val time: Instant,
+    override val value: Int,
     override val details: Map<String, String>,
     override val tags: List<String>,
     override val type: MetricType,
 ) : IMetric {
 
-    override fun toString(): String {
-        return "Metric(nameSpace='$nameSpace', time=$time, value=$value, details=$details, tags=$tags, type=$type)"
-    }
 }

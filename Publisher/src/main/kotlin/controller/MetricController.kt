@@ -1,11 +1,11 @@
 package controller
 
 import io.javalin.apibuilder.ApiBuilder
+import kotlinx.datetime.Clock
 import metric.Metric
 import metric.MetricType
 import service.MetricService
-import java.math.BigDecimal
-import java.time.LocalDateTime
+import kotlinx.datetime.LocalDateTime
 
 class MetricController {
 
@@ -14,11 +14,11 @@ class MetricController {
     fun postMetricValue() {
         ApiBuilder.get("/metric/A") {
 
-            for (n in 1 .. 5) {
+            for (n in 1 .. 2) {
                 metricService.postMetric(Metric(
                     nameSpace = "",
-                    time = LocalDateTime.now(),
-                    value = BigDecimal(n),
+                    time = Clock.System.now(),
+                    value = n,
                     details = mapOf("keyA" to "valueA", "keyB" to "valueB"),
                     tags = listOf("tagA", "tagB"),
                     type = MetricType.Value
@@ -30,11 +30,11 @@ class MetricController {
     fun postMetricSummary() {
         ApiBuilder.get("/metric/B") {
 
-            for (n in 1 .. 5) {
+            for (n in 1 .. 2) {
                 metricService.postMetric(Metric(
                     nameSpace = "",
-                    time = LocalDateTime.now(),
-                    value = BigDecimal(n),
+                    time = Clock.System.now(),
+                    value = n,
                     details = mapOf("keyA" to "valueA", "keyB" to "valueB"),
                     tags = listOf("tagA", "tagB"),
                     type = MetricType.Summary
@@ -46,11 +46,11 @@ class MetricController {
     fun postMetricCounter() {
         ApiBuilder.get("/metric/C") {
 
-            for (n in 1 .. 5) {
+            for (n in 1 .. 2) {
                 metricService.postMetric(Metric(
                     nameSpace = "",
-                    time = LocalDateTime.now(),
-                    value = BigDecimal(n),
+                    time = Clock.System.now(),
+                    value = n,
                     details = mapOf("keyA" to "valueA", "keyB" to "valueB"),
                     tags = listOf("tagA", "tagB"),
                     type = MetricType.Counter
@@ -62,11 +62,11 @@ class MetricController {
     fun postMetricInterval() {
         ApiBuilder.get("/metric/D") {
 
-            for (n in 1 .. 5) {
+            for (n in 1 .. 2) {
                 metricService.postMetric(Metric(
                     nameSpace = "",
-                    time = LocalDateTime.now(),
-                    value = BigDecimal(n),
+                    time = Clock.System.now(),
+                    value = n,
                     details = mapOf("keyA" to "valueA", "keyB" to "valueB"),
                     tags = listOf("tagA", "tagB"),
                     type = MetricType.Interval

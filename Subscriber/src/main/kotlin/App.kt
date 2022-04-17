@@ -8,17 +8,19 @@ fun main() {
     val factory = ConnectionFactory()
     val connection = factory.newConnection("amqp://guest:guest@localhost:5672/")
     val channel = connection.createChannel()
-    val consumerTag = "SimpleConsumer"
+    val consumerTag = "MetricConsumer"
 
-    channel.queueDeclare("metric_queue", false, false, false, null)
+    channel.queueDeclare("metric_queue", true, false, false, null)
 
     println("[$consumerTag] Waiting for messages...")
-    val deliverCallback = DeliverCallback { consumerTag: String?, delivery: Delivery ->
+
+    val deliverCallback = DeliverCallback { tag: String?, delivery: Delivery ->
         val message = String(delivery.body, StandardCharsets.UTF_8)
-        println("[$consumerTag] Received message: '$message'")
+        println("[$tag] Received message: '$message'")
     }
-    val cancelCallback = CancelCallback { consumerTag: String? ->
-        println("[$consumerTag] was canceled")
+
+    val cancelCallback = CancelCallback { tag: String? ->
+        println("[$tag] was canceled")
     }
 
     channel.basicConsume("metric_queue", true, consumerTag, deliverCallback, cancelCallback)

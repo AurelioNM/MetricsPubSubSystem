@@ -1,12 +1,11 @@
 package metric
 
-import java.math.BigDecimal
-import java.time.LocalDateTime
+import kotlinx.datetime.Instant
 
-interface IMetric {
+sealed interface IMetric {
     val nameSpace: String
-    val time: LocalDateTime
-    val value: BigDecimal
+    val time: Instant
+    val value: Int
     val details: Map<String, String>
     val tags: List<String>
     val type: MetricType
